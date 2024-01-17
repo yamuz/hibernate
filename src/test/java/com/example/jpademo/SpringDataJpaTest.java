@@ -31,7 +31,8 @@ public class SpringDataJpaTest {
         System.out.println("**DataJpaTest** " + countBefore);
 
         assertThat(countBefore).isEqualTo(2);
-        bookRepository.save(Book.builder().title("Alds").publisher("dsf").isbn("12").build());
+        Book book = new Book("Alds", "dsf","ALmaz");
+        bookRepository.save(book);
 
         long countAfter = bookRepository.count();
         System.out.println("**DataJpaTest after** " + countAfter);
