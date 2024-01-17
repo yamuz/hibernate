@@ -3,12 +3,14 @@ package com.example.jpademo.bootstrap;
 import com.example.jpademo.domain.Book;
 import com.example.jpademo.repositories.BookRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 /**
  * created by Almaz on 11.01.2024
  */
 @Component
+@Profile({"local", "default"})
 public class Initializer implements CommandLineRunner {
     private final BookRepository bookRepository;
 
@@ -18,24 +20,18 @@ public class Initializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        bookRepository.deleteAll();
 
-        Book bookDDO = Book.builder()
-                .title("Java way")
-                .publisher("Abdraeyev")
-                .isbn("1245")
-                .build();
-        Book savedBook = bookRepository.save(bookDDO);
-        System.out.println("savedBook id = " + savedBook.getId());
+        Book bookDDD = new Book("Domain Driven Design", "123", "RandomHouse");
+        Book savedDDD = bookRepository.save(bookDDD);
 
-        Book bookDDO2 = Book.builder()
-                .title("SQL")
-                .publisher("Abdraeyev")
-                .isbn("124567")
-                .build();
-        Book savedBook2 = bookRepository.save(bookDDO2);
+        Book bookSIA = new Book("Spring In Action", "234234", "Oriely");
+        Book savedSIA = bookRepository.save(bookSIA);
 
         bookRepository.findAll().forEach(book -> {
-            System.out.println("Title " + book.getTitle() + ", id " + book.getId());
+            System.out.println("Book Id: " + book.getId());
+            System.out.println("Book Title: " + book.getTitle());
         });
+
     }
 }
