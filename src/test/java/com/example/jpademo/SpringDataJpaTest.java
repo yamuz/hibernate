@@ -1,5 +1,7 @@
 package com.example.jpademo;
 
+import com.example.jpademo.dao.BookDao;
+import com.example.jpademo.dao.BookDaoJpaImpl;
 import com.example.jpademo.domain.Book;
 import com.example.jpademo.repositories.BookRepository;
 import org.junit.jupiter.api.MethodOrderer;
@@ -8,7 +10,11 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
+import org.springframework.test.context.ActiveProfiles;
+
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -18,10 +24,13 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @DataJpaTest
 //initializer is used
 @ComponentScan(basePackages = "com.example.jpademo.bootstrap")
+@ActiveProfiles("local")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class SpringDataJpaTest {
     @Autowired
     BookRepository bookRepository;
+
+
     @Test
     @Order(1)
     //@Commit
@@ -39,11 +48,4 @@ public class SpringDataJpaTest {
         assertThat(countAfter).isEqualTo(countBefore + 1);
     }
 
-    @Order(2)
-    @Test
-    public void dummy() {
-
-        long count = bookRepository.count();
-        System.out.println("**DataJpaTest** Order2" + count);
-    }
 }
